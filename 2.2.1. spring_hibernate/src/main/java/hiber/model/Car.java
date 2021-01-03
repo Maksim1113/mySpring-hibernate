@@ -8,6 +8,7 @@ import java.io.Serializable;
 public class Car implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
 
     @Column(name = "car_model")
@@ -15,7 +16,10 @@ public class Car implements Serializable {
 
     @Column(name = "car_series")
     private int series;
-    
+
+    @OneToOne(mappedBy = "car")
+    private User user;
+
     public Car(){
 
     }
@@ -23,6 +27,14 @@ public class Car implements Serializable {
     public Car(String model, int series) {
         this.model = model;
         this.series = series;
+    }
+
+   public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public long getId() {

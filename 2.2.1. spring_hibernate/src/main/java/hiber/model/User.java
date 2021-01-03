@@ -1,10 +1,13 @@
 package hiber.model;
 
+import org.hibernate.metamodel.model.domain.internal.AbstractIdentifiableType;
+
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Serializable {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,12 +22,27 @@ public class User {
    @Column(name = "email")
    private String email;
 
+   @OneToOne(cascade = CascadeType.ALL)
+   @JoinTable(name = "user_car",
+   joinColumns = @JoinColumn(name = "user_id"),
+   inverseJoinColumns = @JoinColumn(name = "car_id"))
+   private Car car;
+
    public User() {}
    
    public User(String firstName, String lastName, String email) {
       this.firstName = firstName;
       this.lastName = lastName;
       this.email = email;
+   }
+
+
+   public Car getCar() {
+      return car;
+   }
+
+   public void setCar(Car car) {
+      this.car = car;
    }
 
    public Long getId() {
